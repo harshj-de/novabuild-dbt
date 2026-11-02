@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: novabuild
+    schema: raw
+    tables:
+      - name: brokers
+      - name: carriers
+      - name: certificates
+      - name: claims
+      - name: claim_assessments
+      - name: claim_payments
+      - name: coi_verifications
+        config:
+          loaded_at_field: "TRY_TO_TIMESTAMP(created_at)"
+          freshness:
+            warn_after: {count: 24, period: hour}
+            error_after: {count: 48, period: hour}
+      - name: compliance_tracking
+      - name: contractors
+      - name: contractor_enrollments
+      - name: endorsements
+      - name: inspections
+      - name: payroll_reports
+      - name: policies
+      - name: policy_coverages
+      - name: premiums
+      - name: prequalifications
+      - name: projects
+      - name: safety_incidents
+      - name: sponsors
+      - name: wrap_programs
