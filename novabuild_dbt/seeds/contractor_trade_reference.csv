@@ -1,0 +1,16 @@
+trade,trade_code,trade_category,risk_class
+Excavation,EXC,Site Work,High
+Demolition,DEM,Site Work,High
+Landscaping,LND,Site Work,Low
+Concrete,CON,Structural,Medium
+Masonry,MAS,Structural,Medium
+Steel/Structural,STL,Structural,High
+Roofing,ROF,Structural,High
+Plumbing,PLB,MEP,Medium
+HVAC,HVC,MEP,Medium
+Electrical,ELE,MEP,Medium
+Fire Protection,FIR,MEP,Medium
+Glass/Glazing,GLZ,Finishes,Medium
+Painting,PNT,Finishes,Low
+Elevator,ELV,Specialty,High
+General Contractor,GEN,General,Medium
