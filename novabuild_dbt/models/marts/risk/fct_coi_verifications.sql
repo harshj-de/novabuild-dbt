@@ -29,5 +29,5 @@ SELECT
     created_at
 FROM verifications
 {% if is_incremental() %}
-WHERE created_at > (SELECT MAX(created_at) FROM {{ this }})
+WHERE created_at >= (SELECT DATEADD(day, -7, MAX(created_at)) FROM {{ this }})
 {% endif %}
