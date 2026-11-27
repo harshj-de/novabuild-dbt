@@ -27,3 +27,8 @@ models:
       - name: verification_id
         data_tests:
           - not_null 
+      - name: verification_result
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['Compliant', 'Non-Compliant', 'Deficient', 'Pending Review']
