@@ -1,4 +1,4 @@
-{{ config(warn_if='>0', error_if='>200') }}
+{{ config(warn_if='>0', error_if='>200', store_failures=true, schema='test_failures') }}
 SELECT
     contractor_id,
     company_name, 
