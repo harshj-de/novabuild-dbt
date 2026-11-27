@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: fct_claims
+    columns:
+      - name: claim_id
+        data_tests:
+          - not_null
+          - unique
+      - name: project_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_projects')
+                field: project_id
