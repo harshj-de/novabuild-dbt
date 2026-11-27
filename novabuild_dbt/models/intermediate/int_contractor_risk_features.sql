@@ -21,7 +21,7 @@ incidents_12m AS (
 coi AS (
     SELECT
         contractor_id,
-        COUNT(*) AS coi_checks,
+        COUNT(verification_result) AS coi_checks,
         SUM(CASE WHEN verification_result IN ('Non-Compliant', 'Deficient') THEN 1 ELSE 0 END) AS coi_failures
     FROM {{ ref('fct_coi_verifications') }}
     GROUP BY contractor_id
@@ -32,9 +32,9 @@ SELECT
     c.tier,
     c.emr,
     COALESCE(i.incidents_last_12m, 0)          AS incidents_last_12m,
-    k.coi_checks,
-    k.coi_failures,
-    ROUND(k.coi_failures / k.coi_checks, 4)    AS coi_failure_rate
+    COALESCE(k.coi_checks, 0)                               AS coi_checks,
+    COALESCE(k.coi_failures, 0)                             AS coi_failures,
+    ROUND(k.coi_failures / NULLIF(k.coi_checks, 0), 4)      AS coi_failure_rate
 FROM contractors c
 LEFT JOIN incidents_12m i ON c.contractor_id = i.contractor_id
 LEFT JOIN coi k           ON c.contractor_id = k.contractor_id
