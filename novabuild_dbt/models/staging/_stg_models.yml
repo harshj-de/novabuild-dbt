@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: stg_contractors
+    columns:
+      - name: contractor_id
+        data_tests:
+          - not_null
+          - unique
+  - name: stg_projects
+    columns: 
+      - name: project_id
+        data_tests:
+          - not_null 
+  - name: stg_claims
+    columns: 
+      - name: claim_id
+        data_tests:
+          - not_null 
+  - name: stg_coi_verifications
+    columns: 
+      - name: verification_id
+        data_tests:
+          - not_null 
