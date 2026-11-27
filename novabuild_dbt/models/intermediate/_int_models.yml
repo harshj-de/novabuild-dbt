@@ -1,0 +1,49 @@
+version: 2
+
+unit_tests:
+  - name: unittest_contractor_risk_features
+    description: "5 mocked contractors covering normal, zero, boundary, anchor-day and no-COI cases"
+    model: int_contractor_risk_features
+    given:
+      - input: ref('dim_contractors')
+        rows:
+          - {contractor_id: CON-A, tier: Standard, emr: 0.9}
+          - {contractor_id: CON-B, tier: Preferred, emr: 0.7}
+          - {contractor_id: CON-C, tier: Conditional, emr: 1.1}
+          - {contractor_id: CON-D, tier: Probationary, emr: 1.6}
+          - {contractor_id: CON-E, tier: Standard, emr: 1.0}
+
+      - input: ref('stg_safety_incidents')
+        format: sql
+        rows: |
+          select * from (values
+            ('CON-A', '2024-06-15'::date),
+            ('CON-A', '2024-03-01'::date),
+            ('CON-C', '2023-12-01'::date),
+            ('CON-C', '2022-05-10'::date),
+            ('CON-D', '2024-12-01'::date),
+            ('CON-E', '2024-11-30'::date)
+          ) as t(contractor_id, incident_date)
+
+      - input: ref('fct_coi_verifications')
+        rows:
+          - {contractor_id: CON-A, verification_result: Non-Compliant}
+          - {contractor_id: CON-A, verification_result: Compliant}
+          - {contractor_id: CON-A, verification_result: Compliant}
+          - {contractor_id: CON-A, verification_result: Compliant}
+          - {contractor_id: CON-B, verification_result: Compliant}
+          - {contractor_id: CON-B, verification_result: Compliant}
+          - {contractor_id: CON-B, verification_result: Compliant}
+          - {contractor_id: CON-C, verification_result: Deficient}
+          - {contractor_id: CON-C, verification_result: Pending Review}
+          - {contractor_id: CON-C, verification_result: Compliant}
+          - {contractor_id: CON-D, verification_result: Non-Compliant}
+          - {contractor_id: CON-D, verification_result: Deficient}
+
+    expect:
+      rows:
+        - {contractor_id: CON-A, incidents_last_12m: 2, coi_checks: 4, coi_failures: 1, coi_failure_rate: 0.25}
+        - {contractor_id: CON-B, incidents_last_12m: 0, coi_checks: 3, coi_failures: 0, coi_failure_rate: 0}
+        - {contractor_id: CON-C, incidents_last_12m: 0, coi_checks: 3, coi_failures: 1, coi_failure_rate: 0.3333}
+        - {contractor_id: CON-D, incidents_last_12m: 1, coi_checks: 2, coi_failures: 2, coi_failure_rate: 1}
+        - {contractor_id: CON-E, incidents_last_12m: 1, coi_checks: null, coi_failures: null, coi_failure_rate: null}
