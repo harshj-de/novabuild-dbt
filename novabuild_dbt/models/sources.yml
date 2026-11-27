@@ -18,6 +18,11 @@ sources:
             error_after: {count: 48, period: hour}
       - name: compliance_tracking
       - name: contractors
+        columns:
+          - name: contractor_id
+            data_tests:
+              - not_null
+              - unique
       - name: contractor_enrollments
       - name: endorsements
       - name: inspections
