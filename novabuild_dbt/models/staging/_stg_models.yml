@@ -32,3 +32,13 @@ models:
           - accepted_values:
               arguments:
                 values: ['Compliant', 'Non-Compliant', 'Deficient', 'Pending Review']
+
+  - name: stg_safety_incidents
+    columns:
+      - name: incident_id
+        data_tests:
+          - not_null
+          - unique
+      - name: contractor_id
+        data_tests:
+          - not_null
